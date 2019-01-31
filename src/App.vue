@@ -11,6 +11,7 @@
         this.$axios.get(url)
             .then((res)=>{
                 this.$store.commit('setGlobalsettings',res.data.data[0]);
+              console.log(this.$store.state.globalSettings);
             })
             .catch((err)=>{
                 console.error(err)
