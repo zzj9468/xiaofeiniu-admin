@@ -24,9 +24,9 @@
        mounted() {
            var url=this.$store.state.globalSettings.apiUrl+'/admin/table'
            this.$axios.get(url)
-                .then((res)=>{
-                    console.log(res)
-                    this.tableList=res.data.data
+                .then(({data})=>{
+                    console.log(data)
+                    this.tableList=data.data
                 })
                 .catch((err)=>{
                     console.error(err)
