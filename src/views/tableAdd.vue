@@ -47,8 +47,26 @@
             var url=this.$store.state.globalSettings.apiUrl+'/admin/table';
             this.$axios.post(url,this.tableInfo)
                 .then((res)=>{
-                    console.log(res.data)
-                })
+                    var code=res.data.code;
+                    if(code==400){
+                        this.$message({
+                            showClose:true,
+                            message:'桌台添加失败',
+                            type:'error'
+                        })
+                    }else if(code==200){
+                        this.$message({
+                            showClose:true,
+                            message:'一个桌台添加成功',
+                            type:'success'
+                        })
+                    }else{
+                        this.$message({
+                            showClose:true,
+                            message:'此桌台已存在，请重新起名',
+                            type:'error'
+                        })
+                    }})
                 .catch((err)=>{
                     console.error(err)
                 })

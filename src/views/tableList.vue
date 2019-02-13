@@ -7,7 +7,7 @@
         </el-breadcrumb>
         <br>
         <el-row  :gutter="10">
-            <el-col :xs='12' :sm='8' :md='6' :lg='4' :xl='2' v-for='(t,index) of tableList' :key='index'>
+            <el-col :xs='12' :sm='8' :md='6' :lg='4' :xl='3' v-for='(t,index) of tableList' :key='index'>
                 <xfn-table :info='t'></xfn-table>
             </el-col>
         </el-row>

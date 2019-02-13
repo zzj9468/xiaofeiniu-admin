@@ -10,14 +10,15 @@
         </el-card>
         <!--桌台详情的对话框-->
         <el-dialog
+            width='600px'
             :title="info.tid+'号桌台详情'"
             :visible='dialogTableDetailVisible' 
             :before-close='closeDialogDetail' >
         <!--对话框主体-->
-            <el-tabs tab='border-card'>
+            <el-tabs tab='border-card'  @tab-click='makeQrcoode'>
                 <el-tab-pane label='桌台状态'>状态加载中..</el-tab-pane>
-                <el-tab-pane label='桌台二维码' @tab-click='makeQrcoode()'>
-                    <canvas id='qrcanvas'></canvas>
+                <el-tab-pane label='桌台二维码'>
+                    <img :src="qrcodeData" alt="">
                 </el-tab-pane>
             </el-tabs>
             <div slot='footer'>
@@ -31,7 +32,8 @@
     export default{
         data(){
             return{
-                dialogTableDetailVisible:false
+                dialogTableDetailVisible:false,
+                qrcodeData:''  //base64编码的字符串
             }
         },
         props:["info"],
@@ -56,13 +58,18 @@
             makeQrcoode(){
                 //创建二维码,注意!!此方法不能在当前组件mounted中调用,因为绘图必须的canvas在el-dialog中,对话框在组件加载时并不在DOM树上
                 var qrcode=require('qrcode');
-                var canvas=document.getElementById('qrcanvas');
                 //每个桌子对应的url形如:http://127.0.0.1:8092/#/3
                 var tableUrl=this.$store.state.globalSettings.appUrl+'/#/'+this.info.tid;
-                qrcode.toCanvas(canvas,tableUrl,{errorCorrectionLevel:'H'},(err,canvas)=>{
-                    console.log(err);
-                    console.log(canvas);
-                });
+                // console.log(tableUrl)
+                //把绘制的到的图片二进制数据准换为base64编码字符串
+                qrcode.toDataURL(tableUrl,{width:300,errorCorrectionLevel:'H'},(err,url)=>{
+                    // console.log('二维码图片绘制完成、，数据如下')
+                    this.qrcodeData=url;
+                })
+                // qrcode.toCanvas(canvas,tableUrl,{width:300,errorCorrectionLevel:'H'},(err,canvas)=>{
+                //     console.log(err);
+                //     console.log(canvas);
+                // });
         }
 
     }
